@@ -23,8 +23,11 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@nuxtjs/eslint-config": "^11.0.0",
     "@nuxtjs/eslint-module": "^3.1.0",
+    "@nuxtjs/fontawesome": "^1.1.2",
     "@nuxtjs/tailwindcss": "^5.3.3",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.24.0",
