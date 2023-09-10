@@ -13,3 +13,9 @@
 * {
   font-family: 'DM Sans';
 }
+.content-div {
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 250px;
+}

@@ -4,7 +4,7 @@
   >
     <div class="ml-4">
       <h1 class="font-bold text-2xl">
-        <span class="text-teal-500">Hamzah</span>BacaBuku
+        <span class="text-lime-400">Hamzah</span>BacaBuku
       </h1>
     </div>
     <div>
