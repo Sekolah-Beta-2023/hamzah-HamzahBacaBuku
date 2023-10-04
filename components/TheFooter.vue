@@ -1,16 +1,12 @@
 <template>
-  <footer class="bg-lime-400">
-    <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+  <footer class="bg-[#445D48]">
+    <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8 text-[#001524]">
       <div class="md:flex md:justify-between">
         <div class="mb-6 md:mb-0">
-          <a href="https://flowbite.com/" class="mb-5 flex items-center">
-            <!-- <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              class="h-8 mr-3"
-              alt="FlowBite Logo"
-            /> -->
+          <a href="/" class="mb-5 flex items-center">
             <h1 class="self-center text-2xl font-semibold whitespace-nowrap">
-              <span class="text-lime-300 bg-white p-1">Hamzah</span>BacaBuku
+              <span class="text-[#445D48] bg-[#fde5d4] p-1">Hamzah</span
+              >BacaBuku
             </h1>
           </a>
           <h3 class="mb-2 text-xl font-bold">Hubungi Saya</h3>
@@ -18,9 +14,7 @@
         </div>
         <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
           <div>
-            <h2 class="mb-6 text-sm font-semibold uppercase text-white">
-              Follow Us
-            </h2>
+            <h2 class="mb-6 text-sm font-semibold uppercase">Follow Us</h2>
             <ul class="font-medium">
               <li class="mb-4">
                 <a href="https://www.instagram.com/" class="hover:underline"
@@ -35,9 +29,7 @@
             </ul>
           </div>
           <div>
-            <h2 class="mb-6 text-sm font-semibold uppercase text-white">
-              Category
-            </h2>
+            <h2 class="mb-6 text-sm font-semibold uppercase">Category</h2>
             <ul class="font-medium">
               <li class="mb-4">
                 <a href="" class="hover:underline">Fiksi</a>
@@ -54,9 +46,7 @@
             </ul>
           </div>
           <div>
-            <h2 class="mb-6 text-sm font-semibold uppercase text-white">
-              Books
-            </h2>
+            <h2 class="mb-6 text-sm font-semibold uppercase">Books</h2>
             <ul class="font-medium">
               <li class="mb-4">
                 <a href="#" class="hover:underline">Atomic Habits</a>
@@ -80,7 +70,7 @@
           >.
         </span>
         <div class="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
-          <a href="#" class="text-gray-900 hover:text-white">
+          <a href="#" class="text-gray-900 hover:text-[#fde5d4]">
             <svg
               class="w-4 h-4"
               aria-hidden="true"
@@ -96,7 +86,7 @@
             </svg>
             <span class="sr-only">Facebook page</span>
           </a>
-          <a href="#" class="text-gray-900 hover:text-white">
+          <a href="#" class="text-gray-900 hover:text-[#fde5d4]">
             <svg
               class="w-4 h-4"
               aria-hidden="true"
@@ -110,7 +100,7 @@
             </svg>
             <span class="sr-only">Discord community</span>
           </a>
-          <a href="#" class="text-gray-900 hover:text-white">
+          <a href="#" class="text-gray-900 hover:text-[#fde5d4]">
             <svg
               class="w-4 h-4"
               aria-hidden="true"
@@ -126,7 +116,7 @@
             </svg>
             <span class="sr-only">Twitter page</span>
           </a>
-          <a href="#" class="text-gray-900 hover:text-white">
+          <a href="#" class="text-gray-900 hover:text-[#fde5d4]">
             <svg
               class="w-4 h-4"
               aria-hidden="true"

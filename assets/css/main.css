@@ -19,3 +19,6 @@
   background-size: cover;
   height: 250px;
 }
+#book-list > div:nth-child(even) {
+  @apply justify-end;
+}
