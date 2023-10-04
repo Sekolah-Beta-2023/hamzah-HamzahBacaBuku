@@ -157,13 +157,12 @@
     <div class="w-full bg-[#445D48] px-4 md:px-16">
       <div class="border-x-2 border-[#001524]">
         <div class="flex justify-center items-center">
-          <div class="max-w-[1000px] py-8 text-center text-[#fde5d4]">
+          <div class="max-w-[500px] py-8 text-center text-[#fde5d4]">
             <p class="font-medium text-xl">
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam,
-              nemo? Exercitationem nam sit numquam, architecto iste
-              necessitatibus eveniet doloremque corporis."
+              "Makin aku banyak membaca, makin banyak aku berpikir ; makin aku
+              belajar, makin aku sadar bahwa aku tak mengetahui apapun"
             </p>
-            <h5 class="font-bold">-Hamzah</h5>
+            <h5 class="font-bold">-Voltaire</h5>
           </div>
         </div>
       </div>

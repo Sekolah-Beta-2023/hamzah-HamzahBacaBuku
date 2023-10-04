@@ -1,9 +1,9 @@
 <template>
   <div class="pt-[80px] bg-crem">
-    <div class="border-x-2 mx-6 md:mx-16 border-[#001524]">
+    <div class="border-x-2 mx-6 md:mx-16 border-[#001524] min-h-screen">
       <div class="flex justify-between items-center p-4">
         <h1 class="text-2xl font-bold">RINGKASAN BUKU-BUKU</h1>
-        <a href="" class="p-4 bg-primary">
+        <a href="/books/create" class="p-4 bg-primary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"
