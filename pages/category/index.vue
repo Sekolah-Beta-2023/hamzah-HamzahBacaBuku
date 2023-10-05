@@ -17,15 +17,19 @@
         </a>
       </div>
       <div class="mt-8 p-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <div
             v-for="(category, i) in categories"
             :key="i"
             class="bg-slate-100 text-secondary p-6 relative"
           >
-            <h1 class="font-bold text-lg text-center">{{ category.title }}</h1>
+            <a :href="'category/' + category.title">
+              <h1 class="font-bold text-lg text-center">
+                {{ category.title }}
+              </h1>
+            </a>
             <a
-              href="/category/create"
+              :href="'/category/edit/' + category.title"
               class="p-2 md:p-4 bg-amber-400 absolute top-0 left-0"
             >
               <svg
@@ -39,9 +43,9 @@
                 />
               </svg>
             </a>
-            <a
-              href="/category/create"
+            <button
               class="p-2 md:p-4 bg-red-200 absolute top-0 right-0"
+              @click="hapusData(category.id)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +57,7 @@
                   d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"
                 />
               </svg>
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -64,27 +68,32 @@
 export default {
   data() {
     return {
-      categories: [
-        {
-          title: 'Fantasi',
-        },
-        {
-          title: 'Komedi',
-        },
-        {
-          title: 'Romance',
-        },
-        {
-          title: 'Life',
-        },
-        {
-          title: 'Pysychology',
-        },
-        {
-          title: 'Tech',
-        },
-      ],
+      categories: null,
     }
+  },
+  mounted() {
+    this.getCategory()
+  },
+  updated() {
+    this.getCategory()
+  },
+  methods: {
+    async getCategory() {
+      const response = await this.$axios.get('/rest/v1/category')
+      this.categories = response.data
+    },
+    async hapusData(id) {
+      const konfirmasi = window.confirm('Anda yakin ingin menghapus data ini?')
+
+      if (konfirmasi) {
+        try {
+          await this.$axios.delete(`/rest/v1/category?id=eq.${id}`)
+          this.$router.push('/category')
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    },
   },
 }
 </script>
