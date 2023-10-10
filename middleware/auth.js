@@ -12,7 +12,7 @@ export default async function ({ route, app, redirect }, next) {
     if (user === null && isCreateOrEdit) {
       return redirect('/login')
     }
-    console.log(user)
+    // console.log(user)
     app.login = !!user
   } catch (error) {
     app.login = false
