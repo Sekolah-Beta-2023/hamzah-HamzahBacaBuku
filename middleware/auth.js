@@ -1,7 +1,6 @@
 import supabase from '~/utils/httpClients'
 
-export default async function ({ route, app, redirect }, next) {
-  console.log('Middleware dijalankan')
+export default async function ({ route, store, redirect }) {
   try {
     const {
       data: { user },
@@ -9,18 +8,17 @@ export default async function ({ route, app, redirect }, next) {
     const path = route.fullPath
     const isCreateOrEdit = path.includes('create') || path.includes('edit')
 
-    if (user === null && isCreateOrEdit) {
+    if (!user && isCreateOrEdit) {
+      store.commit('setAuth', false)
       return redirect('/login')
     }
-    // console.log(user)
-    app.login = !!user
+    // Jika pengguna sudah login, set variabel auth menjadi true
+    store.commit('setAuth', !!user)
   } catch (error) {
-    app.login = false
+    store.commit('setAuth', false)
     console.error(
       'Terjadi kesalahan saat memeriksa status login:',
       error.message
     )
   }
-  // console.clear()
-  next()
 }

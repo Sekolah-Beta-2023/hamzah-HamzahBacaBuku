@@ -126,7 +126,10 @@ export default {
           </div>
         </div>
       </div>
-      <div v-if="auth" class="flex justify-between items-center p-8">
+      <div
+        v-if="$store.state.auth"
+        class="flex justify-between items-center p-8"
+      >
         <div class="flex gap-4">
           <button class="p-4 bg-red-600" @click="hapusData">
             <svg
@@ -217,9 +220,9 @@ Deskripsi</textarea
                 {{ item.content }}
               </p>
               <div class="p-2 text-slate-100 bg-primary absolute top-0 left-0">
-                {{ i }}
+                {{ i + 1 }}
               </div>
-              <div v-if="auth" class="flex absolute top-0 right-0">
+              <div v-if="$store.state.auth" class="flex absolute top-0 right-0">
                 <button
                   class="p-4 bg-amber-400"
                   @click="

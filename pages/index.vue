@@ -13,8 +13,8 @@
               TEMUKAN RINGKASAN BUKU BUKU
             </h1>
             <div class="max-w-[160px]">
-              <a
-                href="/books"
+              <nuxt-link
+                to="/books"
                 class="text-[#fde5d4] border-[#001524] border-2 py-3 px-5 my-2 flex items-center hover:bg-[#fde5d4] hover:text-[#001524] hover:border-[#fde5d4]"
                 >Lihat Buku<span
                   ><svg
@@ -33,7 +33,7 @@
                       d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
                       clip-rule="evenodd"
                     ></path></svg></span
-              ></a>
+              ></nuxt-link>
             </div>
           </div>
           <div class="grow-0 shrink basis-full md:basis-1/2">
@@ -50,24 +50,15 @@
       <div class="border-x-2 border-[#001524]">
         <div class="flex justify-center items-center flex-wrap">
           <div
-            class="grow-0 shrink basis-1/2 md:basis-1/4 p-8 text-center border-r-2 border-[#001524] border-b-2 md:border-b-0"
+            v-for="(category, i) in categories"
+            :key="i"
+            class="grow-0 shrink basis-1/2 md:basis-1/4 py-8 text-center border-r-2 border-[#001524] border-b-2 md:border-b-0"
           >
-            <a href="/home" class="text-[#001524]">Komedi</a>
-          </div>
-          <div
-            class="grow-0 shrink basis-1/2 md:basis-1/4 p-8 text-center md:border-r-2 border-[#001524] border-b-2 md:border-b-0"
-          >
-            <a href="/home" class="text-[#001524]">Fantasi</a>
-          </div>
-          <div
-            class="grow-0 shrink basis-1/2 md:basis-1/4 p-8 text-center border-r-2 border-[#001524] border-b-2 md:border-b-0"
-          >
-            <a href="/home" class="text-[#001524]">Life</a>
-          </div>
-          <div
-            class="grow-0 shrink basis-1/2 md:basis-1/4 p-8 text-center border-[#001524] border-b-2 md:border-b-0"
-          >
-            <a href="/home" class="text-[#001524]">Romance</a>
+            <nuxt-link
+              :to="'category/' + category.title"
+              class="text-[#001524]"
+              >{{ category.title }}</nuxt-link
+            >
           </div>
         </div>
       </div>
@@ -94,10 +85,9 @@
             >
               <h4 class="text-2xl font-bold">Atomic Habits</h4>
               <p class="md:pr-4">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-                ducimus incidunt asperiores officiis! Repellat sequi velit quod
-                magni nisi numquam at, impedit quasi quae fugiat a, obcaecati,
-                est ullam! Praesentium.
+                "Buku Atomic Habits" oleh James Clear adalah panduan praktis
+                untuk meraih perubahan positif dalam hidup melalui perubahan
+                kecil dalam kebiasaan.
               </p>
             </div>
           </div>
@@ -116,12 +106,13 @@
             <div
               class="p-4 grow-0 shrink basis-full md:basis-1/2 text-[#001524]"
             >
-              <h4 class="text-2xl font-bold md:text-end">Atomic Habits</h4>
+              <h4 class="text-2xl font-bold md:text-end">
+                Pysychology of Money
+              </h4>
               <p class="md:text-end">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-                ducimus incidunt asperiores officiis! Repellat sequi velit quod
-                magni nisi numquam at, impedit quasi quae fugiat a, obcaecati,
-                est ullam! Praesentium.
+                "Buku 'Psychology of Money' oleh Morgan Housel adalah eksplorasi
+                yang mendalam tentang hubungan kompleks antara emosi, perilaku
+                manusia, dan keuangan."
               </p>
             </div>
           </div>
@@ -140,12 +131,12 @@
             <div
               class="p-4 grow-0 shrink basis-full md:basis-1/2 text-[#001524]"
             >
-              <h4 class="text-2xl font-bold">Atomic Habits</h4>
+              <h4 class="text-2xl font-bold">Thinking Fast and Slow</h4>
               <p class="md:pr-4">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure
-                ducimus incidunt asperiores officiis! Repellat sequi velit quod
-                magni nisi numquam at, impedit quasi quae fugiat a, obcaecati,
-                est ullam! Praesentium.
+                "Buku 'Thinking, Fast and Slow' oleh Daniel Kahneman adalah
+                penjelajahan yang mendalam tentang cara berpikir manusia,
+                mengekspos dua sistem pemikiran yang mempengaruhi pengambilan
+                keputusan kita sehari-hari."
               </p>
             </div>
           </div>
@@ -216,7 +207,21 @@
 </template>
 
 <script>
-// import img1 from 'assets/img/atomic-habits.png'
-export default {}
+import supabase from '~/utils/httpClients'
+export default {
+  data() {
+    return {
+      categories: '',
+    }
+  },
+  async fetch() {
+    const { data: category } = await supabase
+      .from('category')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(0, 3)
+    this.categories = category
+  },
+}
 </script>
 <style></style>

@@ -18,6 +18,12 @@
         <li class="px-4 py-2 hover:text-[#D6CC99] font-bold">
           <nuxt-link to="/category">Category</nuxt-link>
         </li>
+        <li
+          class="px-4 py-2 hover:text-[#D6CC99] font-bold bg-pinky cursor-pointer"
+        >
+          <div v-if="auth" @click="SignOut">LogOut</div>
+          <nuxt-link v-else to="/login">login</nuxt-link>
+        </li>
       </ul>
     </div>
     <!-- humberger -->
@@ -49,18 +55,47 @@
         class="py-6 text-4xl hover:text-[#D6CC99] font-bold"
         @click="nav = !nav"
       >
-        <nuxt-link to="/category">Category</nuxt-link>
+        <nuxt-link :to="'/login'">{{ auth ? 'Logout' : 'Login' }}</nuxt-link>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
+import supabase from '~/utils/httpClients'
+
 export default {
+  watch: {
+    '$route.query': '$fetch',
+  },
+  // async asyncData() {
+  //   const {
+  //     data: { user },
+  //   } = await supabase.auth.getUser()
+  //   const auth = user !== null
+
+  //   return { auth }
+  // },
   data() {
     return {
       nav: false,
+      auth: false,
     }
+  },
+  async fetch() {
+    await this.getUser()
+  },
+  methods: {
+    async getUser() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      this.auth = user !== null
+    },
+    async SignOut() {
+      await supabase.auth.signOut()
+      this.$router.push('/')
+    },
   },
 }
 </script>

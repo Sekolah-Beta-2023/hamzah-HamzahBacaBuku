@@ -33,13 +33,13 @@
             >
               Save
             </button>
-            <a
-              href="/category"
+            <nuxt-link
+              to="/category"
               class="bg-red-200 ml-4 text-secondary font-bold text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
               Cancel
-            </a>
+            </nuxt-link>
           </div>
         </div>
       </form>
@@ -61,17 +61,15 @@ export default {
   methods: {
     async onFormSubmit() {
       try {
-        // cek duplicate data
-
         const { data: category } = await supabase
           .from('category')
           .select('*')
           .eq('title', this.data.title)
-        console.log(category)
         if (category.length !== 0) {
           this.error = true
         } else {
           this.$router.push('/category')
+
           await supabase.from('category').insert(this.data)
         }
       } catch (error) {

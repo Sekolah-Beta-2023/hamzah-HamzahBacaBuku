@@ -31,31 +31,24 @@
           <div>
             <h2 class="mb-6 text-sm font-semibold uppercase">Category</h2>
             <ul class="font-medium">
-              <li class="mb-4">
-                <a href="" class="hover:underline">Fiksi</a>
-              </li>
-              <li class="mb-4">
-                <a href="" class="hover:underline">Non Fiksi</a>
-              </li>
-              <li class="mb-4">
-                <a href="" class="hover:underline">Misteri</a>
-              </li>
-              <li class="mb-4">
-                <a href="" class="hover:underline">Fantasi</a>
+              <li v-for="(items, i) in categories" :key="i" class="mb-4">
+                <nuxt-link
+                  :to="'category/' + items.title"
+                  class="hover:underline"
+                  >{{ items.title }}</nuxt-link
+                >
               </li>
             </ul>
           </div>
           <div>
             <h2 class="mb-6 text-sm font-semibold uppercase">Books</h2>
             <ul class="font-medium">
-              <li class="mb-4">
-                <a href="#" class="hover:underline">Atomic Habits</a>
-              </li>
-              <li class="mb-4">
-                <a href="#" class="hover:underline">Thinking, Fast and Slow</a>
-              </li>
-              <li class="mb-4">
-                <a href="#" class="hover:underline">Psycology of Money</a>
+              <li v-for="(item, i) in books" :key="i" class="mb-4">
+                <nuxt-link
+                  :to="'/books/detail' + item.title"
+                  class="hover:underline"
+                  >{{ item.title }}</nuxt-link
+                >
               </li>
             </ul>
           </div>
@@ -137,3 +130,30 @@
     </div>
   </footer>
 </template>
+<script>
+import supabase from '~/utils/httpClients'
+export default {
+  data() {
+    return {
+      categories: '',
+      books: '',
+    }
+  },
+  async fetch() {
+    // category
+    const { data: category } = await supabase
+      .from('category')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(0, 3)
+    this.categories = category
+    // books
+    const { data } = await supabase
+      .from('books')
+      .select()
+      .order('created_at', { ascending: false })
+      .range(0, 3)
+    this.books = data
+  },
+}
+</script>

@@ -3,7 +3,11 @@
     <div class="border-x-2 mx-6 md:mx-16 border-[#001524] min-h-screen">
       <div class="flex justify-between items-center p-4">
         <h1 class="text-2xl font-bold">KATEGORI BUKU</h1>
-        <nuxt-link v-if="auth" :to="'/category/create'" class="p-4 bg-primary">
+        <nuxt-link
+          v-if="$store.state.auth"
+          :to="'/category/create'"
+          class="p-4 bg-primary"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"
@@ -29,7 +33,7 @@
               </h1>
             </nuxt-link>
             <nuxt-link
-              v-if="auth"
+              v-if="$store.state.auth"
               :to="'/category/edit/' + category.title"
               class="p-2 md:p-4 bg-amber-400 absolute top-0 left-0"
             >
@@ -45,7 +49,7 @@
               </svg>
             </nuxt-link>
             <button
-              v-if="auth"
+              v-if="$store.state.auth"
               class="p-2 md:p-4 bg-red-200 absolute top-0 right-0"
               @click="hapusData(category.id)"
             >
@@ -69,10 +73,6 @@
 <script>
 import supabase from '~/utils/httpClients'
 export default {
-  async asyncData({ app }) {
-    const auth = await app.login
-    return { auth }
-  },
   data() {
     return {
       categories: null,

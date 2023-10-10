@@ -15,11 +15,11 @@ export default {
   methods: {
     async signIn() {
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
           email: this.email,
           password: this.password,
         })
-        console.log(data)
+
         if (error) throw error
         this.$router.push('/')
       } catch (error) {

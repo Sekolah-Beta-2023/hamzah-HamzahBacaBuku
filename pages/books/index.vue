@@ -3,7 +3,11 @@
     <div class="border-x-2 mx-6 md:mx-16 border-[#001524] min-h-screen">
       <div class="flex justify-between items-center p-4">
         <h1 class="text-2xl font-bold">RINGKASAN BUKU-BUKU</h1>
-        <nuxt-link v-if="auth" :to="'/books/create'" class="p-4 bg-primary">
+        <nuxt-link
+          v-if="$store.state.auth"
+          :to="'/books/create'"
+          class="p-4 bg-primary"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"
@@ -38,10 +42,6 @@
 <script>
 import supabase from '~/utils/httpClients'
 export default {
-  async asyncData({ app }) {
-    const auth = await app.login
-    return { auth }
-  },
   data() {
     return {
       books: null,
