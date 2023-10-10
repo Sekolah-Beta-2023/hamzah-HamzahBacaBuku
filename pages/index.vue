@@ -217,21 +217,6 @@
 
 <script>
 // import img1 from 'assets/img/atomic-habits.png'
-export default {
-  data() {
-    return {
-      book: [
-        {
-          booksName: 'atomic-habits',
-          url: 'atomic-habits.jpg',
-        },
-        {
-          booksName: 'atomic-habits',
-          url: 'atomic-habits.jpg',
-        },
-      ],
-    }
-  },
-}
+export default {}
 </script>
 <style></style>

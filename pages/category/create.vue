@@ -47,6 +47,8 @@
   </div>
 </template>
 <script>
+import supabase from '~/utils/httpClients'
+
 export default {
   data() {
     return {
@@ -59,15 +61,18 @@ export default {
   methods: {
     async onFormSubmit() {
       try {
-        const response = await this.$axios.get(
-          `/rest/v1/category?title=eq.${this.data.title}`
-        )
-        if (response.data.length !== 0) {
+        // cek duplicate data
+
+        const { data: category } = await supabase
+          .from('category')
+          .select('*')
+          .eq('title', this.data.title)
+        console.log(category)
+        if (category.length !== 0) {
           this.error = true
         } else {
-          await this.$axios.post('/rest/v1/category', this.data)
-
           this.$router.push('/category')
+          await supabase.from('category').insert(this.data)
         }
       } catch (error) {
         console.error(error)

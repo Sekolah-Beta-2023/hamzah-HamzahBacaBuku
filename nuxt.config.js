@@ -45,6 +45,7 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/supabase',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -74,5 +75,9 @@ export default {
         },
       },
     },
+  },
+  // serverMiddleware: ['~/middleware/auth'],
+  router: {
+    middleware: ['auth'],
   },
 }

@@ -33,13 +33,13 @@
             >
               Save
             </button>
-            <a
-              href="/category"
+            <nuxt-link
+              to="/category"
               class="bg-red-200 ml-4 text-secondary font-bold text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
               Cancel
-            </a>
+            </nuxt-link>
           </div>
         </div>
       </form>
@@ -47,6 +47,8 @@
   </div>
 </template>
 <script>
+import supabase from '~/utils/httpClients'
+
 export default {
   data() {
     return {
@@ -58,29 +60,32 @@ export default {
       error: false,
     }
   },
-  mounted() {
-    this.getData()
+  async fetch() {
+    await this.getData()
   },
   methods: {
     async getData() {
-      const response = await this.$axios.get(
-        `/rest/v1/category?title=eq.${this.param}`
-      )
-      this.data.title = response.data[0].title
-      this.data.id = response.data[0].id
+      const { data: category } = await supabase
+        .from('category')
+        .select('*')
+        .eq('title', this.param)
+      this.data.title = category[0].title
+      this.data.id = category[0].id
     },
     async onFormSubmit() {
       try {
-        const response = await this.$axios.get(
-          `/rest/v1/category?title=eq.${this.data.title}&id!=eq.${this.data.id}`
-        )
-        if (response.data.length !== 0) {
+        const { data: category } = await supabase
+          .from('category')
+          .select('*')
+          .eq('title', this.data.title)
+        if (category.length !== 0) {
           this.error = true
         } else {
-          await this.$axios.patch(
-            `/rest/v1/category?title=eq.${this.param}`,
-            this.data
-          )
+          await supabase
+            .from('category')
+            .update(this.data)
+            .eq('id', this.data.id)
+
           this.$router.push('/category')
         }
       } catch (error) {

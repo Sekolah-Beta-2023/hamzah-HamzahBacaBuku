@@ -3,7 +3,7 @@
     <div class="border-x-2 mx-6 md:mx-16 border-[#001524] min-h-screen">
       <div class="flex justify-between items-center p-4">
         <h1 class="text-2xl font-bold">RINGKASAN BUKU-BUKU</h1>
-        <nuxt-link v-if="auth" :to="'/books/create'" class="p-4 bg-primary">
+        <nuxt-link v-if="auth" to="/books/create" class="p-4 bg-primary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"
@@ -21,7 +21,7 @@
           <nuxt-link
             v-for="(book, i) in books"
             :key="i"
-            :to="'books/detail/' + book.title"
+            :to="'/books/detail/' + book.title"
             class="basis-full lg:basis-2/5 bg-slate-100 text-secondary p-6"
           >
             <h1 class="font-bold text-lg">{{ book.title }}</h1>
@@ -44,19 +44,36 @@ export default {
   },
   data() {
     return {
+      param: this.$route.params.title,
       books: null,
+      id: null,
     }
   },
+
   async fetch() {
-    const { data } = await supabase
-      .from('books')
-      .select()
-      .order('created_at', { ascending: false })
-    this.books = data
+    await this.getCategory()
+    await this.getBooks()
   },
   updated() {
     this.$fetch()
   },
-  methods: {},
+  methods: {
+    async getBooks() {
+      const { data } = await supabase
+        .from('books')
+        .select()
+        .eq('category_id', this.id)
+        .order('created_at', { ascending: false })
+
+      this.books = data
+    },
+    async getCategory() {
+      const { data: category } = await supabase
+        .from('category')
+        .select()
+        .eq('title', this.param)
+      this.id = category[0].id
+    },
+  },
 }
 </script>

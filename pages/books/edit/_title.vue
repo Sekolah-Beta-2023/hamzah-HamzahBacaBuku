@@ -28,7 +28,15 @@
             />
           </div>
         </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
+        <div class="flex flex-wrap -mx-3 mb-6 justify-center">
+          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <img
+              class="h-auto max-w-xs rounded-lg"
+              :src="imgUrl"
+              alt="image description"
+            />
+          </div>
+
           <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -42,12 +50,12 @@
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               name="berkas"
               type="file"
-              accept="image/*"
               placeholder="Thumbnail"
-              required
-              @change="nameImg"
+              @change="handleChangeImg"
             />
           </div>
+        </div>
+        <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full md:w-1/2 px-3">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -97,7 +105,7 @@
               name="description"
               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             >
-Deskripsi</textarea
+  Deskripsi</textarea
             >
           </div>
         </div>
@@ -109,13 +117,13 @@ Deskripsi</textarea
             >
               Save
             </button>
-            <nuxt-link
-              to="/books"
+            <button
+              @click="$router.go(-1)"
               class="bg-red-200 ml-4 text-secondary font-bold text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
               Cancel
-            </nuxt-link>
+            </button>
           </div>
         </div>
       </form>
@@ -129,62 +137,91 @@ import supabase from '~/utils/httpClients'
 export default {
   data() {
     return {
-      data: {
-        title: '',
-        description: '',
-        penulis: '',
-        category_id: null,
-        img_name: null,
-      },
+      param: this.$route.params.title,
+      data: '',
       error: false,
       categories: null,
+      imgUrl: '',
+      oldImgName: '',
     }
   },
   async fetch() {
-    const { data } = await supabase.from('category').select('*')
-    this.categories = data
+    await this.getBookData()
+    await this.getCategories()
   },
   methods: {
+    async getBookData() {
+      const { data: books } = await supabase
+        .from('books')
+        .select('*')
+        .eq('title', this.param)
+      this.data = books[0]
+      this.oldImgName = books[0].img_name
+      this.getImg('books', books[0].img_name)
+    },
+    async getCategories() {
+      const { data } = await supabase.from('category').select('*')
+      this.categories = data
+    },
+
+    async handleChangeImg() {
+      this.nameImg()
+      await supabase.storage
+        .from('bookImg')
+        .remove([`preview/${this.data.img_name}`])
+
+      await supabase.storage
+        .from('bookImg')
+        .upload('preview/' + this.data.img_name, this.$refs.fileInput.files[0])
+
+      this.getImg('preview', this.data.img_name)
+    },
     async onFormSubmit() {
       // Cek apakah judul buku sudah ada
       const { data: existingBooks } = await supabase
         .from('books')
         .select('*')
         .eq('title', this.data.title)
+        .neq('id', this.data.id)
       // Jika sudah ada, tampilkan error
       if (existingBooks.length !== 0) {
         this.error = true
       } else {
-        // Jika judul buku belum ada, tambahkan buku baru
-        await supabase.from('books').insert(this.data)
-        // Upload gambar
-        if ((await this.checkDuplicateImg()) === 0) {
+        // update data
+        await supabase.from('books').update(this.data).eq('id', this.data.id)
+        // Upload gambar ke penyimpanan
+        if (this.$refs.fileInput.files[0]) {
+          await supabase.storage
+            .from('bookImg')
+            .remove(['preview/' + this.data.img_name])
+          await supabase.storage
+            .from('bookImg')
+            .remove(['books/' + this.oldImgName])
           await supabase.storage
             .from('bookImg')
             .upload(
               'books/' + this.data.img_name,
               this.$refs.fileInput.files[0]
             )
-        } else {
-          await supabase.storage
-            .from('bookImg')
-            .update(
-              'books/' + this.data.img_name,
-              this.$refs.fileInput.files[0]
-            )
         }
-
+        // Pindahkan pengguna ke halaman '/books'
         this.$router.push('/books')
       }
     },
-    async checkDuplicateImg() {
-      const { data } = await supabase.storage.from('bookImg').list('books', {
+    async checkDuplicateImg(path) {
+      const { data } = await supabase.storage.from('bookImg').list(path, {
         limit: 100,
         offset: 0,
         sortBy: { column: 'name', order: 'asc' },
-        search: this.data.title,
+        search: this.data.img_name,
       })
       return data.length
+    },
+    getImg(path, file) {
+      const { data } = supabase.storage
+        .from('bookImg')
+        .getPublicUrl(`${path}/` + file)
+      this.imgUrl = data.publicUrl
     },
     nameImg() {
       const imgPath = this.$refs.fileInput.files[0]
